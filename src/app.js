@@ -112,7 +112,7 @@ function onGalleryClick(event) {
   refs.modalImg.src = event.target.dataset.source;
   refs.modalImg.alt = event.target.alt;
   window.addEventListener('keydown', onPushEscape);
-  window.addEventListener('keydown', onKeybrdDownArrow);
+  window.addEventListener('keydown', onKeyboardDownArrow);
 }
 
 function onClickCloseBtn() {
@@ -134,13 +134,22 @@ function onPushEscape(event) {
   }
 }
 
-function onKeybrdDownArrow(event) {
-  if (event.code === 'ArrowRight') {
-    event.target.index += 1;
+function onKeyboardDownArrow(event) {
+  if (galleryItems.length - 1 > indexActiveImage && event.code === 'ArrowRight') {
+    indexActiveImage += 1;
+    return refs.modalImg.src = galleryItems[indexActiveImage].original;
+  }
+  if (indexActiveImage > 0 && event.code === 'ArrowLeft') {
+    indexActiveImage -= 1;
+    return refs.modalImg.src = galleryItems[indexActiveImage].original;
+  }
+  if (indexActiveImage === galleryItems.length - 1 && event.code === 'ArrowRight') {
+    indexActiveImage = 0;
+    return refs.modalImg.src = galleryItems[indexActiveImage].original;
+  }
+  if (indexActiveImage === 0 && event.code === 'ArrowLeft') {
+   
+    indexActiveImage = galleryItems.length - 1;
+    return refs.modalImg.src = galleryItems[indexActiveImage].original;
+  }
 }
-if (event.code === 'ArrowLeft') {
-    event.target -= 1;
-}
-  console.log(event.path[1]);
-}
- 
