@@ -73,11 +73,14 @@ const refs = {
 }
 
 const galleryMarkup = createGalleryMarkup(galleryItems);
+let indexActiveImage = 0;
 
 refs.galleryRef.insertAdjacentHTML('beforeend', galleryMarkup);
 refs.galleryRef.addEventListener('click', onGalleryClick);
 refs.closeBtn.addEventListener('click', onClickCloseBtn);
 refs.overlayEl.addEventListener('click', onOverlayClick);
+
+
 
 function createGalleryMarkup(images) {
   return images.map(({ preview, original, description }) => {
@@ -104,15 +107,19 @@ function onGalleryClick(event) {
   if (!isGalleryImageEl) {
     return;
   }
+
   refs.modalWin.classList.add('is-open');
   refs.modalImg.src = event.target.dataset.source;
   refs.modalImg.alt = event.target.alt;
+  window.addEventListener('keydown', onPushEscape);
+  window.addEventListener('keydown', onKeybrdDownArrow);
 }
 
 function onClickCloseBtn() {
   refs.modalWin.classList.remove('is-open');
   refs.modalImg.src = "#";
   refs.modalImg.alt = "";
+  window.removeEventListener('keydown', onPushEscape);
 }
 
 function onOverlayClick(event) {
@@ -120,3 +127,20 @@ function onOverlayClick(event) {
     onClickCloseBtn();
   }
 }
+
+function onPushEscape(event) {
+  if (event.code === 'Escape') {
+    onClickCloseBtn();
+  }
+}
+
+function onKeybrdDownArrow(event) {
+  if (event.code === 'ArrowRight') {
+    event.target.index += 1;
+}
+if (event.code === 'ArrowLeft') {
+    event.target -= 1;
+}
+  console.log(event.path[1]);
+}
+ 
